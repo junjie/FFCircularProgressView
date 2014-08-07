@@ -35,12 +35,32 @@
 /**
  * Icon view to be rendered instead of default arrow
  */
-@property (nonatomic, strong) UIView* iconView;
+@property (nonatomic, strong) UIView* startIconView;
 
 /**
- * Bezier path to be rendered instead of icon view or default arrow
+ * Bezier path to be rendered instead of start icon view or default arrow
  */
-@property (nonatomic, strong) UIBezierPath* iconPath;
+@property (nonatomic, strong) UIBezierPath* startIconPath;
+
+/**
+ * Bezier path to be rendered instead of default stop icon
+ */
+@property (nonatomic, strong) UIBezierPath* stopIconPath;
+
+/**
+ * If a different icon should be rendered instead of the default stop icon (or
+ * the stop icon path if provided) when paused is YES, provide a different icon
+ * path for that here. Typically, you'd provide an icon that indicates 'resume'
+ */
+@property (nonatomic, strong) UIBezierPath* pauseIconPath;
+
+/**
+ * Set to pause to indicate that the progress view is currently on hold and
+ * not expected to have changes to progress. This flag is used to determine
+ * whether to show stopIconPath or pauseIconPath when progress > 0 and < 1,
+ * but only if pauseIconPath is not nil
+ */
+@property (readwrite, nonatomic, getter = isPaused) BOOL paused;
 
 /**
  * You can hide the icons which are shown during progress

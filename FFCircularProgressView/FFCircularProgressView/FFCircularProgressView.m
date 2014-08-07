@@ -40,15 +40,15 @@
     return self;
 }
 
-- (void)setIconView:(UIView *)iconView
+- (void)setStartIconView:(UIView *)startIconView
 {
-    if (_iconView)
+    if (_startIconView)
     {
-        [_iconView removeFromSuperview];
+        [_startIconView removeFromSuperview];
     }
     
-    _iconView = iconView;
-    [self addSubview:_iconView];
+    _startIconView = startIconView;
+    [self addSubview:_startIconView];
 }
 
 - (void)setup {
@@ -126,17 +126,38 @@
     } else if (([self progress] > 0) && [self progress] < 1.0) {
         
         if (!_hideProgressIcons)
-            [self drawStop];
+		{
+			// Only show the pauseIconPath if we're currently paused, and
+			// there is a pauseIconPath provided
+			if (self.isPaused && self.pauseIconPath)
+			{
+				self.iconLayer.path = self.pauseIconPath.CGPath;
+				self.iconLayer.strokeColor = self.progressLayer.strokeColor;
+				self.iconLayer.fillColor = self.tintColor.CGColor;
+			}
+			// Draw custom stop icon
+			else if (self.stopIconPath)
+			{
+				self.iconLayer.path = self.stopIconPath.CGPath;
+				self.iconLayer.strokeColor = self.progressLayer.strokeColor;
+				self.iconLayer.fillColor = self.tintColor.CGColor;
+			}
+			// Draw default stop icon
+			else
+			{
+				[self drawStop];
+			}
+		}
         
     } else {
-        if (!self.iconView && !self.iconPath)
+        if (!self.startIconView && !self.startIconPath)
         {
             if (!_hideProgressIcons)
                 [self drawArrow];
         }
-        else if (self.iconPath)
+        else if (self.startIconPath)
         {
-            _iconLayer.path = self.iconPath.CGPath;
+            _iconLayer.path = self.startIconPath.CGPath;
             _iconLayer.fillColor = nil;
         }
     }
