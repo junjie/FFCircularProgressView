@@ -122,7 +122,20 @@
     [_progressLayer setPath:processPath.CGPath];
     
     if ([self progress] == 1.0) {
-        [self drawTick];
+		
+		if (self.isStayingCompleted && self.stayCompleteIconPath)
+		{
+			[self drawCompleteWithPath:self.stayCompleteIconPath];
+		}
+		else if (self.completeIconPath)
+		{
+			[self drawCompleteWithPath:self.completeIconPath];
+		}
+		else
+		{
+			[self drawTick];
+		}
+		
     } else if (([self progress] > 0) && [self progress] < 1.0) {
         
         if (!_hideProgressIcons)
@@ -198,6 +211,14 @@
     _progressBackgroundLayer.path = processBackgroundPath.CGPath;
 }
 
+- (void) drawCompleteWithPath:(UIBezierPath *)completePath
+{
+    [_iconLayer setPath:completePath.CGPath];
+    [_iconLayer setFillColor:self.tickColor.CGColor];
+    [_progressBackgroundLayer setFillColor:_progressLayer.strokeColor];
+	
+}
+
 - (void) drawTick {
     CGFloat radius = MIN(self.frame.size.width, self.frame.size.height)/2;
     
@@ -228,9 +249,7 @@
     // ...and move it into the right place.
     [tickPath applyTransform:CGAffineTransformMakeTranslation(radius * .46, 1.02 * radius)];
     
-    [_iconLayer setPath:tickPath.CGPath];
-    [_iconLayer setFillColor:self.tickColor.CGColor];
-    [_progressBackgroundLayer setFillColor:_progressLayer.strokeColor];
+	[self drawCompleteWithPath:tickPath];
 }
 
 - (void) drawStop {

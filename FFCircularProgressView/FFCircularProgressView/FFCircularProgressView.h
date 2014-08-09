@@ -55,12 +55,30 @@
 @property (nonatomic, strong) UIBezierPath* pauseIconPath;
 
 /**
+ * If a different icon should be rendered instead of the default tick icon when
+ * progress = 1, provide a different icon path for that here.
+ */
+@property (nonatomic, strong) UIBezierPath* completeIconPath;
+
+/**
+ * If a different icon should be rendered instead of the default tick icon when
+ * progress = 1, and when stayingCompleted is YES, provide a different icon path
+ * for that here.
+ */
+@property (nonatomic, strong) UIBezierPath* stayCompleteIconPath;
+
+/**
  * Set to pause to indicate that the progress view is currently on hold and
  * not expected to have changes to progress. This flag is used to determine
  * whether to show stopIconPath or pauseIconPath when progress > 0 and < 1,
  * but only if pauseIconPath is not nil
  */
 @property (readwrite, nonatomic, getter = isPaused) BOOL paused;
+
+/**
+ * Set to YES to indicate that the progress will stay at 1 for a while
+ */
+@property (readwrite, nonatomic, getter = isStayingCompleted) BOOL stayingCompleted;
 
 /**
  * You can hide the icons which are shown during progress
